@@ -1,4 +1,4 @@
-package ru.job4j.dreamjob;
+package ru.job4j.dream;
 
 public abstract class User {
     private String name;
