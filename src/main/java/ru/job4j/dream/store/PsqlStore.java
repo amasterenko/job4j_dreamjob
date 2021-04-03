@@ -158,14 +158,15 @@ public class PsqlStore implements Store {
              PreparedStatement ps =  cn.prepareStatement("SELECT * FROM post WHERE id =?")
         ) {
             ps.setInt(1, id);
-            ResultSet result = ps.executeQuery();
-            if (result.next()) {
-                resultPost = new Post(
-                        result.getInt("id"),
-                        result.getString("name"),
-                        result.getString("description"),
-                        result.getObject("created", LocalDateTime.class)
-                );
+            try (ResultSet result = ps.executeQuery()) {
+                if (result.next()) {
+                    resultPost = new Post(
+                            result.getInt("id"),
+                            result.getString("name"),
+                            result.getString("description"),
+                            result.getObject("created", LocalDateTime.class)
+                    );
+                }
             }
         } catch (Exception e) {
             LOG.error("Exception occurred: ", e);
@@ -180,12 +181,13 @@ public class PsqlStore implements Store {
              PreparedStatement ps =  cn.prepareStatement("SELECT * FROM candidate WHERE id =?")
         ) {
             ps.setInt(1, id);
-            ResultSet result = ps.executeQuery();
-            if (result.next()) {
-                resultCandidate = new Candidate(
-                        result.getInt("id"),
-                        result.getString("name")
-                );
+            try (ResultSet result = ps.executeQuery()) {
+                if (result.next()) {
+                    resultCandidate = new Candidate(
+                            result.getInt("id"),
+                            result.getString("name")
+                    );
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
