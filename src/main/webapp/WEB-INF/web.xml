@@ -2,7 +2,12 @@
  "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
  "http://java.sun.com/dtd/web-app_2_3.dtd" >
 
-<web-app>
+<web-app
+  xmlns="http://java.sun.com/xml/ns/javaee"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+  version="3.0">
+
   <display-name>Archetype Created Web Application</display-name>
   <servlet>
     <servlet-name>PostServlet</servlet-name>
@@ -16,6 +21,19 @@
     <servlet-name>IndexServlet</servlet-name>
     <servlet-class>ru.job4j.dream.servlet.IndexServlet</servlet-class>
   </servlet>
+  <servlet>
+    <servlet-name>PhotoUplDwnServlet</servlet-name>
+    <servlet-class>ru.job4j.dream.servlet.PhotoUplDwnServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>PhotoDeleteServlet</servlet-name>
+    <servlet-class>ru.job4j.dream.servlet.PhotoDeleteServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>CandidateDeleteServlet</servlet-name>
+    <servlet-class>ru.job4j.dream.servlet.CandidateDeleteServlet</servlet-class>
+  </servlet>
+
   <servlet-mapping>
     <servlet-name>PostServlet</servlet-name>
     <url-pattern>/posts.do</url-pattern>
@@ -27,6 +45,18 @@
   <servlet-mapping>
     <servlet-name>IndexServlet</servlet-name>
     <url-pattern>/index.do</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>PhotoUplDwnServlet</servlet-name>
+    <url-pattern>/photo.do</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>PhotoDeleteServlet</servlet-name>
+    <url-pattern>/delete_photo.do</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>CandidateDeleteServlet</servlet-name>
+    <url-pattern>/delete_candidate.do</url-pattern>
   </servlet-mapping>
 </web-app>
 

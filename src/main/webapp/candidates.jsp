@@ -1,5 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jstl/core" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <!doctype html>
 <html lang="en">
@@ -34,6 +35,7 @@
                     <thead>
                     <tr>
                         <th scope="col">Имена</th>
+                        <th scope="col">Фото</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -43,7 +45,21 @@
                                 <a href='<c:url value="/candidate/edit.jsp?id=${candidate.id}"/>'>
                                     <i class="fa fa-edit mr-3"></i>
                                 </a>
+                                <a href='<c:url value="/delete_candidate.do?id=${candidate.id}"/>'>
+                                    <i class="fa fa-close mr-3"></i>
+                                </a>
                                 <c:out value="${candidate.name}"/>
+                            </td>
+                            <td>
+                                <img src="<c:url value='/photo.do?id=${candidate.id}'/>" width="100px" height="133px"/>
+                                <div class="btn-group-vertical">
+                                    <a href="<c:url value='/candidate/photoUpload.jsp?id=${candidate.id}'/>"
+                                       role="button" class="btn btn-primary btn-sm">Добавить фото
+                                    </a>
+                                    <a href="<c:url value='/delete_photo.do?id=${candidate.id}'/>"
+                                       role="button" class="btn btn-primary btn-sm">Удалить фото
+                                    </a>
+                                </div>
                             </td>
                         </tr>
                     </c:forEach>
