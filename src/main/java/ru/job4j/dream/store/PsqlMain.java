@@ -2,38 +2,33 @@ package ru.job4j.dream.store;
 
 import ru.job4j.dream.model.Candidate;
 import ru.job4j.dream.model.Post;
+import ru.job4j.dream.model.User;
+
+import java.util.Collection;
 
 public class PsqlMain {
     public static void main(String[] args) {
         Store store = PsqlStore.instOf();
-        Post post1 = new Post(0, "Java Job", "");
-        Post post2 = new Post(0, "PHP Job", "");
-        store.save(post1);
-        store.save(post2);
-        System.out.println("All posts:");
-        for (Post post : store.findAllPosts()) {
-            System.out.println(post.getId() + " "
-                    + post.getName() + " " + post.getCreated());
+        User user1 = new User(0, "Vladimir", "v@ya.ru", "12345");
+        User user2 = new User(0, "Ivan", "i@mail.ru", "67890");
+        user1 = store.save(user1);
+        user2 = store.save(user2);
+        System.out.println("All users:");
+        for (User user : store.findAllUsers()) {
+            System.out.println(user.getId() + " "
+                    + user.getName() + " " + user.getEmail() + " " + user.getPassword());
         }
-        post1.setName("Super Job");
-        store.save(post1);
-        Post foundPost = store.findPostById(1);
-        System.out.println("Found post: "
-                + foundPost.getId() + " " + foundPost.getName()
-                + " " + foundPost.getDescription() + " " + foundPost.getCreated());
-
-        Candidate cand1 = new Candidate(0, "Donald Trump");
-        Candidate cand2 = new Candidate(0, "Fedor Konyukhov");
-        store.save(cand1);
-        store.save(cand2);
-        System.out.println("All candidates:");
-        for (Candidate candidate : store.findAllCandidates()) {
-            System.out.println(candidate.getId() + " " + candidate.getName());
+        user1.setName("Vladimir Petrov");
+        store.save(user1);
+        User foundUser = store.findUserByEmail("v@ya.ru");
+        System.out.println("Found user: "
+                + foundUser.getId() + " " + foundUser.getName()
+                + " " + foundUser.getEmail() + " " + foundUser.getPassword());
+        store.deleteUserById(2);
+        System.out.println("All users:");
+        for (User user : store.findAllUsers()) {
+            System.out.println(user.getId() + " "
+                    + user.getName() + " " + user.getEmail() + " " + user.getPassword());
         }
-        cand1.setName("Donald Duck");
-        store.save(cand1);
-        Candidate foundCandidate = store.findCandidateById(1);
-        System.out.println("Found candidate: " + foundCandidate.getId()
-                + " " + foundCandidate.getName());
     }
 }

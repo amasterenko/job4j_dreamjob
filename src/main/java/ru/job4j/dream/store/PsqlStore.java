@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Properties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ru.job4j.dream.model.User;
 
 public class PsqlStore implements Store {
     private static final Logger LOG = LoggerFactory.getLogger(PsqlStore.class.getName());
@@ -53,20 +54,20 @@ public class PsqlStore implements Store {
     }
 
     @Override
-    public void save(Post post) {
+    public Post save(Post post) {
         if (post.getId() == 0) {
-            create(post);
+            return create(post);
         } else {
-            update(post);
+            return update(post);
         }
     }
 
     @Override
-    public void save(Candidate candidate) {
+    public Candidate save(Candidate candidate) {
         if (candidate.getId() == 0) {
-            create(candidate);
+            return create(candidate);
         } else {
-            update(candidate);
+            return update(candidate);
         }
     }
 
@@ -104,7 +105,7 @@ public class PsqlStore implements Store {
         return post;
     }
 
-    private void update(Post post) {
+    private Post update(Post post) {
         try (Connection cn = pool.getConnection();
              PreparedStatement ps =  cn.prepareStatement(
                      "UPDATE post SET name = ?, description = ?, created = ? WHERE id =?")
@@ -117,6 +118,7 @@ public class PsqlStore implements Store {
         } catch (Exception e) {
             LOG.error("Exception occurred: ", e);
         }
+        return post;
     }
 
     private Candidate create(Candidate candidate) {
@@ -138,7 +140,7 @@ public class PsqlStore implements Store {
         return candidate;
     }
 
-    private void update(Candidate candidate) {
+    private Candidate update(Candidate candidate) {
         try (Connection cn = pool.getConnection();
              PreparedStatement ps =  cn.prepareStatement(
                      "UPDATE candidate SET name = ? WHERE id =?")
@@ -149,6 +151,7 @@ public class PsqlStore implements Store {
         } catch (Exception e) {
             LOG.error("Exception occurred: ", e);
         }
+        return candidate;
     }
 
     @Override
@@ -237,5 +240,110 @@ public class PsqlStore implements Store {
             LOG.error("Exception occurred: ", e);
         }
         return candidates;
+    }
+
+    @Override
+    public User save(User user) {
+        if (user.getId() == 0) {
+            return create(user);
+        } else {
+            return update(user);
+        }
+    }
+
+    private User create(User user) {
+        try (Connection cn = pool.getConnection();
+             PreparedStatement ps =  cn.prepareStatement(
+                     "INSERT INTO \"user\"(name, email, password) VALUES (?,?,?)",
+                     PreparedStatement.RETURN_GENERATED_KEYS)
+        ) {
+            ps.setString(1, user.getName());
+            ps.setString(2, user.getEmail());
+            ps.setString(3, user.getPassword());
+            ps.execute();
+            try (ResultSet id = ps.getGeneratedKeys()) {
+                if (id.next()) {
+                    user.setId(id.getInt(1));
+                }
+            }
+        } catch (Exception e) {
+            LOG.error("Exception occurred: ", e);
+        }
+        return user;
+    }
+
+    private User update(User user) {
+        try (Connection cn = pool.getConnection();
+             PreparedStatement ps =  cn.prepareStatement(
+                     "UPDATE \"user\" SET name = ?, email = ?, password = ? WHERE id =?")
+        ) {
+            ps.setString(1, user.getName());
+            ps.setString(2, user.getEmail());
+            ps.setString(3, user.getPassword());
+            ps.setInt(4, user.getId());
+            ps.execute();
+        } catch (Exception e) {
+            LOG.error("Exception occurred: ", e);
+        }
+        return user;
+    }
+
+    @Override
+    public void deleteUserById(int id) {
+        try (Connection cn = pool.getConnection();
+             PreparedStatement ps =  cn.prepareStatement(
+                     "DELETE FROM \"user\" WHERE id=?")
+        ) {
+            ps.setInt(1, id);
+            ps.execute();
+        } catch (Exception e) {
+            LOG.error("Exception occurred: ", e);
+        }
+    }
+
+    @Override
+    public User findUserByEmail(String email) {
+        User resultUser = null;
+        try (Connection cn = pool.getConnection();
+             PreparedStatement ps =  cn.prepareStatement("SELECT * FROM \"user\" WHERE email =?")
+        ) {
+            ps.setString(1, email);
+            try (ResultSet result = ps.executeQuery()) {
+                if (result.next()) {
+                    resultUser = new User(
+                            result.getInt("id"),
+                            result.getString("name"),
+                            result.getString("email"),
+                            result.getString("password")
+                    );
+                }
+            }
+        } catch (Exception e) {
+            LOG.error("Exception occurred: ", e);
+        }
+        return resultUser;
+    }
+
+    @Override
+    public Collection<User> findAllUsers() {
+        List<User> users = new ArrayList<>();
+        try (Connection cn = pool.getConnection();
+             PreparedStatement ps =  cn.prepareStatement("SELECT * FROM \"user\"")
+        ) {
+            try (ResultSet it = ps.executeQuery()) {
+                while (it.next()) {
+                    users.add(new User(
+                                    it.getInt("id"),
+                                    it.getString("name"),
+                                    it.getString("email"),
+                                    it.getString("password")
+                            )
+                    );
+                }
+            }
+        } catch (Exception e) {
+            LOG.error("Exception occurred: ", e);
+        }
+        return users;
     }
 }
