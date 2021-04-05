@@ -46,11 +46,9 @@
                 <a class="nav-link" href="<%=request.getContextPath()%>/candidate/edit.jsp">Добавить кандидата</a>
             </li>
             <li class="nav-item">
-                <c:if test="${sessionScope.user!=null}">
-                    <a class="nav-link" href="<%=request.getContextPath()%>/login.jsp">
-                        <c:out value="${sessionScope.user.name}"/> | Выйти
-                    </a>
-                </c:if>
+                <a class="nav-link" href="<%=request.getContextPath()%>/login.jsp">
+                    <c:out value="${sessionScope.user.name}"/> | Выйти
+                </a>
             </li>
         </ul>
     </div>
