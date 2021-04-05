@@ -29,20 +29,24 @@
             <div class="card-header">
                 <ul class="nav nav-tabs">
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page">Авторизация</a>
-                    </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="<%=request.getContextPath()%>/reg.jsp">Регистрация</a>
+                        <a class="nav-link" href="<%=request.getContextPath()%>/login.jsp">Авторизация</a>
+                    </li>
+                        <a class="nav-link active" aria-current="page">Регистрация</a>
                     </li>
                 </ul>
             </div>
             <div class="card-body">
-                <form action="<%=request.getContextPath()%>/auth.do" method="post">
+                <form action="<%=request.getContextPath()%>/reg.do" method="post">
                     <c:if test="${error!=null}">
                         <div class="alert alert-warning" role="alert">
                             <c:out value="${error}"/>
                         </div>
                     </c:if>
+                    <div class="form-group">
+                        <label>Имя</label>
+                        <input type="text" class="form-control" name="name">
+                    </div>
                     <div class="form-group">
                         <label>Почта</label>
                         <input type="text" class="form-control" name="email">
@@ -51,7 +55,7 @@
                         <label>Пароль</label>
                         <input type="text" class="form-control" name="password">
                     </div>
-                    <button type="submit" class="btn btn-primary">Войти</button>
+                    <button type="submit" class="btn btn-primary">Отправить</button>
                 </form>
             </div>
         </div>

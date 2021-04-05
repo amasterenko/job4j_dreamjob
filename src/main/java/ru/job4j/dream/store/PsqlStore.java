@@ -252,6 +252,7 @@ public class PsqlStore implements Store {
     }
 
     private User create(User user) {
+        User resultUser = null;
         try (Connection cn = pool.getConnection();
              PreparedStatement ps =  cn.prepareStatement(
                      "INSERT INTO \"user\"(name, email, password) VALUES (?,?,?)",
@@ -264,12 +265,13 @@ public class PsqlStore implements Store {
             try (ResultSet id = ps.getGeneratedKeys()) {
                 if (id.next()) {
                     user.setId(id.getInt(1));
+                    resultUser = user;
                 }
             }
         } catch (Exception e) {
             LOG.error("Exception occurred: ", e);
         }
-        return user;
+        return resultUser;
     }
 
     private User update(User user) {
