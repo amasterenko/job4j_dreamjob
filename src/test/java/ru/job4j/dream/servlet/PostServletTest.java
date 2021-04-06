@@ -10,8 +10,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 import ru.job4j.dream.model.Post;
 import ru.job4j.dream.store.MemStore;
@@ -82,6 +81,8 @@ public class PostServletTest {
                 new Post(3, "Senior Java Job", "")
         );
         new PostServlet().doGet(req, resp);
+        verify(req).getRequestDispatcher("posts.jsp");
+        verify(rDisp).forward(req, resp);
         Iterator<Post> postsIt = ((Collection<Post>) req.getAttribute("posts")).iterator();
         assertThat(postsIt.next(), is(expectedPosts.get(0)));
         assertThat(postsIt.next(), is(expectedPosts.get(1)));
