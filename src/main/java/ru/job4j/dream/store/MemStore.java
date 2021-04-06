@@ -10,9 +10,9 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class MemStore implements Store {
-    private static final AtomicInteger POST_ID = new AtomicInteger(4);
-    private static final AtomicInteger CANDIDATE_ID = new AtomicInteger(4);
-    private static final AtomicInteger USER_ID = new AtomicInteger(4);
+    private static final AtomicInteger POST_ID = new AtomicInteger(3);
+    private static final AtomicInteger CANDIDATE_ID = new AtomicInteger(3);
+    private static final AtomicInteger USER_ID = new AtomicInteger(3);
     private final static MemStore INST = new MemStore();
     private final Map<Integer, Post> posts = new ConcurrentHashMap<>();
     private final Map<Integer, Candidate> candidates = new ConcurrentHashMap<>();
@@ -71,7 +71,7 @@ public class MemStore implements Store {
     @Override
     public User save(User user) {
         if (user.getId() == 0) {
-            user.setId(POST_ID.incrementAndGet());
+            user.setId(USER_ID.incrementAndGet());
         }
         users.put(user.getId(), user);
         return user;
