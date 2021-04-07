@@ -9,7 +9,7 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script>
         function validate() {
-            var fields = ["firstname", "lastname", "gender", "description"]
+            var fields = ["firstname", "lastname", "gender", "description"];
             var i, l = fields.length;
             var field;
             for (i = 0; i < l; i++) {
@@ -19,6 +19,16 @@
                     return false;
                 }
             }
+            return true;
+        }
+        function addRow() {
+            var firstname = $('#firstname').val();
+            var lastname = $('#lastname').val();
+            var gender = document.forms["form1"]["gender"].value;
+            var description = $('#description').val();
+
+            $('#table tr:last').after('<tr><td>' + firstname + '</td><td>' + lastname
+                + '</td><td>' + gender + '</td><td>' + description + '</td></tr>');
             return true;
         }
     </script>
@@ -41,18 +51,18 @@
             <input type="text" class="form-control" id="lastname">
         </div>
         <div class="form-group">
-            <label class="radio-inline"><input type="radio" name="gender">Male</label>
-            <label class="radio-inline"><input type="radio" name="gender">Female</label>
+            <label class="radio-inline"><input type="radio" name="gender" value="male">Male</label>
+            <label class="radio-inline"><input type="radio" name="gender" value="female">Female</label>
         </div>
         <div class="form-group" style="max-width:250px">
             <label for="description">Description</label>
             <textarea class="form-control" rows=2 id="description"></textarea>
         </div>
         <div class="form-group">
-            <button type="button" class="btn btn-default" onclick="return validate();">Submit</button>
+            <button type="button" class="btn btn-default" onclick="return validate() && addRow();">Submit</button>
         </div>
     </form>
-    <table class="table top-buffer">
+    <table class="table top-buffer" id="table">
         <thead>
             <tr>
                 <th>First name</th>
@@ -62,8 +72,6 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
-            </tr>
         </tbody>
     </table>
 </div>
