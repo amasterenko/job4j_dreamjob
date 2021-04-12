@@ -4,10 +4,15 @@ import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-
+/**
+ * The class redirects unauthorized users to login.jsp
+ * and passes all users to authorization|registration servlets.
+ *@author AndrewMs
+ *@version 1.0
+ */
 public class AuthFilter implements Filter {
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
+    public void init(FilterConfig filterConfig) {
     }
 
     @Override

@@ -37,7 +37,7 @@
                 </ul>
             </div>
             <div class="card-body">
-                <form action="<%=request.getContextPath()%>/auth.do" method="post">
+                <form action="<%=request.getContextPath()%>/auth.do" method="post" class="was-validated">
                     <c:if test="${error!=null}">
                         <div class="alert alert-warning" role="alert">
                             <c:out value="${error}"/>
@@ -45,11 +45,11 @@
                     </c:if>
                     <div class="form-group">
                         <label>Почта</label>
-                        <input type="text" class="form-control" name="email">
+                        <input type="text" class="form-control" name="email" required>
                     </div>
                     <div class="form-group">
                         <label>Пароль</label>
-                        <input type="text" class="form-control" name="password">
+                        <input type="password" class="form-control" name="password" required>
                     </div>
                     <button type="submit" class="btn btn-primary">Войти</button>
                 </form>

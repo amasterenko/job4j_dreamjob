@@ -1,14 +1,20 @@
 package ru.job4j.dream.store;
 
 import ru.job4j.dream.model.Candidate;
+import ru.job4j.dream.model.City;
 import ru.job4j.dream.model.Post;
 import ru.job4j.dream.model.User;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
-
+/**
+ * The class implements a memory store.
+ * @author AndrewMs
+ * @version 1.0
+ */
 public class MemStore implements Store {
     private static final AtomicInteger POST_ID = new AtomicInteger(3);
     private static final AtomicInteger CANDIDATE_ID = new AtomicInteger(3);
@@ -19,12 +25,15 @@ public class MemStore implements Store {
     private final Map<Integer, User> users = new ConcurrentHashMap<>();
 
     private MemStore() {
+        City city1 = new City(1, "London");
+        City city2 = new City(2, "Moscow");
+        City city3 = new City(3, "New York");
         posts.put(1, new Post(1, "Junior Java Job", "description for junior job"));
         posts.put(2, new Post(2, "Middle Java Job", "description for middle job"));
         posts.put(3, new Post(3, "Senior Java Job", "description for senior job"));
-        candidates.put(1, new Candidate(1, "Junior Java"));
-        candidates.put(2, new Candidate(2, "Middle Java"));
-        candidates.put(3, new Candidate(3, "Senior Java"));
+        candidates.put(1, new Candidate(1, "Junior Java", city1));
+        candidates.put(2, new Candidate(2, "Middle Java", city2));
+        candidates.put(3, new Candidate(3, "Senior Java", city3));
     }
 
     public static MemStore instOf() {
@@ -37,6 +46,16 @@ public class MemStore implements Store {
 
     public Collection<Candidate> findAllCandidates() {
         return candidates.values();
+    }
+
+    @Override
+    public City findCityById(int id) {
+        return new City(1, "London");
+    }
+
+    @Override
+    public Collection<City> findAllCities() {
+        return List.of(new City(1, "London"), new City(2, "Moscow"));
     }
 
     public Post save(Post post) {

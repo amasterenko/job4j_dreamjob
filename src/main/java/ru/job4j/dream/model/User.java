@@ -2,6 +2,11 @@ package ru.job4j.dream.model;
 
 import java.util.Objects;
 
+/**
+ * The class represents users of the system.
+ *@author AndrewMs
+ *@version 1.0
+ */
 public class User {
     private int id;
     private String name;

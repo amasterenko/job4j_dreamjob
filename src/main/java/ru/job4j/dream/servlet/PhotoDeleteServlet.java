@@ -5,7 +5,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
-
+/**
+ * The class deletes candidates' photos by serving GET-requests.
+ * @author AndrewMs
+ * @version 1.0
+ */
 public class PhotoDeleteServlet extends HttpServlet {
 
     @Override

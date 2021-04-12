@@ -9,7 +9,12 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-
+/**
+ * The class saves a post to the store by serving POST-requests
+ * and returns all post and forwards to the post.jsp page by serving GET-requests.
+ * @author AndrewMs
+ * @version 1.0
+ */
 public class PostServlet extends HttpServlet {
     private final Store store = PsqlStore.instOf();
 

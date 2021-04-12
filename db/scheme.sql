@@ -7,7 +7,10 @@ CREATE TABLE post (
 
 CREATE TABLE candidate (
     id SERIAL PRIMARY KEY,
-    name TEXT
+    name TEXT,
+    city_id INTEGER,
+    FOREIGN KEY (city_id) REFERENCES
+    city (id)
 );
 
 CREATE TABLE "user" (
@@ -17,3 +20,19 @@ CREATE TABLE "user" (
     password TEXT,
     UNIQUE (email)
 );
+
+CREATE TABLE city (
+    id SERIAL PRIMARY KEY,
+    name TEXT
+);
+
+INSERT INTO city (name) VALUES ('Moscow'),
+                               ('St.-Petersburg'),
+                               ('Nizhniy Novgorod'),
+                               ('Kazan'),
+                               ('Samara'),
+                               ('Владимир'),
+                               ('Воронеж'),
+                               ('Новосибирск'),
+                               ('Красноярск'),
+                               ('Хабаровск');

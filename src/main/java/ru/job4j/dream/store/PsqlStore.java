@@ -2,6 +2,7 @@ package ru.job4j.dream.store;
 
 import org.apache.commons.dbcp2.BasicDataSource;
 import ru.job4j.dream.model.Candidate;
+import ru.job4j.dream.model.City;
 import ru.job4j.dream.model.Post;
 
 import java.io.BufferedReader;
@@ -17,7 +18,11 @@ import java.util.Properties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.job4j.dream.model.User;
-
+/**
+ * The class implements a database store.
+ * @author AndrewMs
+ * @version 1.0
+ */
 public class PsqlStore implements Store {
     private static final Logger LOG = LoggerFactory.getLogger(PsqlStore.class.getName());
     private final BasicDataSource pool = new BasicDataSource();
@@ -124,10 +129,11 @@ public class PsqlStore implements Store {
     private Candidate create(Candidate candidate) {
         try (Connection cn = pool.getConnection();
              PreparedStatement ps =  cn.prepareStatement(
-                     "INSERT INTO candidate(name) VALUES (?)",
+                     "INSERT INTO candidate(name, city_id) VALUES (?, ?)",
                      PreparedStatement.RETURN_GENERATED_KEYS)
         ) {
             ps.setString(1, candidate.getName());
+            ps.setInt(2, candidate.getCity().getId());
             ps.execute();
             try (ResultSet id = ps.getGeneratedKeys()) {
                 if (id.next()) {
@@ -143,10 +149,11 @@ public class PsqlStore implements Store {
     private Candidate update(Candidate candidate) {
         try (Connection cn = pool.getConnection();
              PreparedStatement ps =  cn.prepareStatement(
-                     "UPDATE candidate SET name = ? WHERE id =?")
+                     "UPDATE candidate SET name = ?, city_id = ? WHERE id =?")
         ) {
             ps.setString(1, candidate.getName());
-            ps.setInt(2, candidate.getId());
+            ps.setInt(2, candidate.getCity().getId());
+            ps.setInt(3, candidate.getId());
             ps.execute();
         } catch (Exception e) {
             LOG.error("Exception occurred: ", e);
@@ -188,7 +195,8 @@ public class PsqlStore implements Store {
                 if (result.next()) {
                     resultCandidate = new Candidate(
                             result.getInt("id"),
-                            result.getString("name")
+                            result.getString("name"),
+                            findCityById(result.getInt("city_id"))
                     );
                 }
             }
@@ -231,7 +239,8 @@ public class PsqlStore implements Store {
                 while (it.next()) {
                     candidates.add(new Candidate(
                                     it.getInt("id"),
-                                    it.getString("name")
+                                    it.getString("name"),
+                                    findCityById(it.getInt("city_id"))
                             )
                     );
                 }
@@ -240,6 +249,49 @@ public class PsqlStore implements Store {
             LOG.error("Exception occurred: ", e);
         }
         return candidates;
+    }
+
+    @Override
+    public Collection<City> findAllCities() {
+        List<City> cities = new ArrayList<>();
+        try (Connection cn = pool.getConnection();
+             PreparedStatement ps =  cn.prepareStatement("SELECT * FROM city")
+        ) {
+            try (ResultSet it = ps.executeQuery()) {
+                while (it.next()) {
+                    cities.add(new City(
+                                    it.getInt("id"),
+                                    it.getString("name")
+                            )
+                    );
+                }
+            }
+        } catch (Exception e) {
+            LOG.error("Exception occurred: ", e);
+        }
+        return cities;
+    }
+
+    @Override
+    public City findCityById(int id) {
+        List<City> cities = new ArrayList<>();
+        City resultCity = null;
+        try (Connection cn = pool.getConnection();
+             PreparedStatement ps =  cn.prepareStatement("SELECT * FROM city WHERE id=?")
+        ) {
+            ps.setInt(1, id);
+            try (ResultSet result = ps.executeQuery()) {
+                if (result.next()) {
+                    resultCity = new City(
+                            result.getInt("id"),
+                            result.getString("name")
+                    );
+                }
+            }
+        } catch (Exception e) {
+            LOG.error("Exception occurred: ", e);
+        }
+        return resultCity;
     }
 
     @Override

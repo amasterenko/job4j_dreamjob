@@ -26,15 +26,15 @@
     <div class="row">
         <div class="card" style="width: 100%">
             <div class="card-header">
-                Загрузка фото для кандидата.
+                Загрузка фото для кандидата
             </div>
             <div class="card-body">
-                <p>Графический файл должен иметь название <c:out value="${param.id}"/></p>
-                <form action='<c:url value="/photo.do"/>' method="post" enctype="multipart/form-data">
+                <form action='<c:url value="/photo.do?id=${param.id}"/>' method="post"
+                      enctype="multipart/form-data" class="was-validated">
                     <div class="checkbox">
-                        <input type="file" name="file" accept="image/*">
+                        <input type="file" name="file" accept="image/*" required>
                     </div>
-                    <button type="submit" class="btn-primary">Submit</button>
+                    <button type="submit" class="btn-primary">Отправить</button>
                 </form>
             </div>
         </div>

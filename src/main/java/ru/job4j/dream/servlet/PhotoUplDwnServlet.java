@@ -18,8 +18,8 @@ import java.util.List;
  * The class serves POST|GET requests.
  * doGet method, through the response, returns an image file with the name equal
  * to the candidate's id from the request.
- * If there is no image file for the id doGet returns a default image file 0.jpg.
- * doPost method gets an image file and saves it to C:\images.
+ * If there is no image file for the id doGet method returns a default image file 0.jpg.
+ * doPost method gets an image file, renames it and saves to C:\images.
  */
 
 public class PhotoUplDwnServlet extends HttpServlet {
@@ -47,6 +47,7 @@ public class PhotoUplDwnServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        String candId = req.getParameter("id");
         DiskFileItemFactory factory = new DiskFileItemFactory();
         ServletContext servletContext = this.getServletConfig().getServletContext();
         File repository = (File) servletContext.getAttribute("javax.servlet.context.tempdir");
@@ -60,7 +61,8 @@ public class PhotoUplDwnServlet extends HttpServlet {
             }
             for (FileItem item : items) {
                 if (!item.isFormField()) {
-                    File file = new File(folder + File.separator + item.getName());
+                    String fileExt = item.getName().substring(item.getName().lastIndexOf('.'));
+                    File file = new File(folder + File.separator + candId + fileExt);
                     try (FileOutputStream out = new FileOutputStream(file)) {
                         out.write(item.getInputStream().readAllBytes());
                     }

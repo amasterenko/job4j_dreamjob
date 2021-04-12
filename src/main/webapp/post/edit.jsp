@@ -46,7 +46,7 @@
                 <a class="nav-link" href="<%=request.getContextPath()%>/candidate/edit.jsp">Добавить кандидата</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="<%=request.getContextPath()%>/login.jsp">
+                <a class="nav-link" href="<%=request.getContextPath()%>/auth.do">
                     <c:out value="${sessionScope.user.name}"/> | Выйти
                 </a>
             </li>
@@ -62,10 +62,11 @@
                 <% } %>
             </div>
             <div class="card-body">
-                <form action="<%=request.getContextPath()%>/posts.do?id=<%=post.getId()%>" method="post">
+                <form action="<%=request.getContextPath()%>/posts.do?id=<%=post.getId()%>" method="post"
+                      class="was-validated">
                     <div class="form-group">
                         <label>Наименование</label>
-                        <input type="text" class="form-control" name="name" value="<%=post.getName()%>">
+                        <input type="text" class="form-control" name="name" value="<%=post.getName()%>" required>
                     </div>
                     <button type="submit" class="btn btn-primary">Сохранить</button>
                 </form>

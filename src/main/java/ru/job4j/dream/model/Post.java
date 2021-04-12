@@ -2,7 +2,11 @@ package ru.job4j.dream.model;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
-
+/**
+ * The class represents a post.
+ *@author AndrewMs
+ *@version 1.0
+ */
 public class Post {
     private int id;
     private String name;

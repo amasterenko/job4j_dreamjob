@@ -5,7 +5,11 @@ import ru.job4j.dream.model.Post;
 import ru.job4j.dream.model.User;
 
 import java.util.Collection;
-
+/**
+ * The class for testing stores.
+ * @author AndrewMs
+ * @version 1.0
+ */
 public class PsqlMain {
     public static void main(String[] args) {
         Store store = PsqlStore.instOf();

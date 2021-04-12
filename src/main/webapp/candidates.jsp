@@ -39,7 +39,7 @@
                 <a class="nav-link" href="<%=request.getContextPath()%>/candidate/edit.jsp">Добавить кандидата</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="<%=request.getContextPath()%>/login.jsp">
+                <a class="nav-link" href="<%=request.getContextPath()%>/auth.do">
                     <c:out value="${sessionScope.user.name}"/> | Выйти</a>
             </li>
         </ul>
@@ -53,7 +53,8 @@
                 <table class="table">
                     <thead>
                     <tr>
-                        <th scope="col">Имена</th>
+                        <th scope="col">Имя</th>
+                        <th scope="col">Город</th>
                         <th scope="col">Фото</th>
                     </tr>
                     </thead>
@@ -68,6 +69,9 @@
                                     <i class="fa fa-close mr-3"></i>
                                 </a>
                                 <c:out value="${candidate.name}"/>
+                            </td>
+                            <td>
+                                <c:out value="${candidate.city.name}"/>
                             </td>
                             <td>
                                 <img src="<c:url value='/photo.do?id=${candidate.id}'/>" width="100px" height="133px"/>
