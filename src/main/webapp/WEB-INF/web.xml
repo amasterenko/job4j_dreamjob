@@ -8,6 +8,11 @@
   xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
   version="3.0">
 
+  <context-param>
+    <param-name>key</param-name>
+    <param-value>dream_job_authentication</param-value>
+  </context-param>
+
   <display-name>Archetype Created Web Application</display-name>
   <servlet>
     <servlet-name>PostServlet</servlet-name>
@@ -46,9 +51,14 @@
     <servlet-class>ru.job4j.dream.servlet.CityServlet</servlet-class>
   </servlet>
   <filter>
+    <filter-name>CORSFilter</filter-name>
+    <filter-class>ru.job4j.dream.filter.CORSFilter</filter-class>
+  </filter>
+  <filter>
     <filter-name>AuthFilter</filter-name>
     <filter-class>ru.job4j.dream.filter.AuthFilter</filter-class>
   </filter>
+
 
   <servlet-mapping>
     <servlet-name>PostServlet</servlet-name>
@@ -86,6 +96,10 @@
     <servlet-name>CityServlet</servlet-name>
     <url-pattern>/cities.do</url-pattern>
   </servlet-mapping>
+  <filter-mapping>
+    <filter-name>CORSFilter</filter-name>
+    <url-pattern>*</url-pattern>
+  </filter-mapping>
   <filter-mapping>
     <filter-name>AuthFilter</filter-name>
     <url-pattern>*.do</url-pattern>

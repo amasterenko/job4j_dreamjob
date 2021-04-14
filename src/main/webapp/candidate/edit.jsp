@@ -17,40 +17,25 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
             integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
     <script>
-        $(document).ready(function () {
+        $(document).ready(function() {
             $("#sel1").hide();
+            let token = localStorage.getItem('ajaxtoken');
             $.ajax({
                 type: 'GET',
                 url: 'http://localhost:8080/dreamjob/cities.do',
-                dataType: 'json'
+                data: 'tk='+token,
+                dataType: 'json',
             }).done (function(data) {
-                let items = "<option disabled selected value> -- Город -- </option>";
+                let existingValue = $("#sel1").val();
+                let items;
                 const cities = data.cities;
                 for (let i = 0; i < cities.length; i++) {
+                    if (cities[i].id==existingValue) {continue;}
                     items += "<option value='" + cities[i].id + "'>" + cities[i].name + "</option>";
                 }
-                $("#sel1").append(items);
+                $("#sel1").append(items).show();
             });
-            let searchParams = new URLSearchParams(window.location.search);
-            let param = searchParams.get('id');
-            let path = 'http://localhost:8080/dreamjob/candidates.do';
-            if(param===null) {
-                $('#сhead').text('Новый кандидат');
-                $("#sel1").prop("selected", false).show();
-                $('#form').attr('action', path+'?id=0');
-                return true;
-            }
-            $.ajax({
-                type: 'GET',
-                url: path,
-                data: 'id=' + param,
-                dataType: 'json'
-            }).done(function (data) {
-                $('#cname').val(data.name);
-                $("#sel1").val(data.city.id).show();
-                $('#form').attr('action', path+'?id='+param);
-            });
-        });
+        })
     </script>
     <title>Работа мечты</title>
 </head>
@@ -68,7 +53,7 @@
                 <a class="nav-link" href="<%=request.getContextPath()%>/post/edit.jsp">Добавить вакансию</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="<%=request.getContextPath()%>/candidate/edit.jsp">Добавить кандидата</a>
+                <a class="nav-link" href="<%=request.getContextPath()%>/candidates.do?id=0">Добавить кандидата</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="<%=request.getContextPath()%>/auth.do">
@@ -79,17 +64,26 @@
     <div class="row">
         <div class="card" style="width: 100%">
             <div class="card-header">
-                <p id="сhead">Редактирование кандидата</p>
+                <c:if test="${candidate == null}">
+                    <p>Новый кандидат</p>
+                </c:if>
+                <c:if test="${candidate != null}">
+                    <p>Редактирование кандидата</p>
+                </c:if>
             </div>
             <div class="card-body">
-                <form id="form" action="" method="post" class="was-validated">
+                <form id="form" action="<%=request.getContextPath()%>/candidates.do" method="post" class="was-validated">
                     <div class="form-group">
                         <label for="cname">Имя</label>
-                        <input id="cname" type="text" class="form-control" name="cname" placeholder="Имя" required>
+                        <input id="cname" type="text" class="form-control" required
+                               name="cname" value="<c:out value="${candidate.name}" default=""/>">
+                        <input type="hidden" name="id" value="<c:out value="${candidate.id}"/>">
                     </div>
                     <div class="form-group">
                         <label for="sel1">Город</label>
-                        <select class="form-control" id="sel1" name="cityId" required></select>
+                        <select class="form-control" id="sel1" name="cityId" required>
+                            <option value=<c:out value="${candidate.city.id}"/>><c:out value="${candidate.city.name}"/></option>
+                        </select>
                     </div>
                     <button type="submit" class="btn btn-primary">Сохранить</button>
                 </form>

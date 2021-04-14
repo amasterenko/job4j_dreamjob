@@ -35,7 +35,7 @@
                 <a class="nav-link" href="<%=request.getContextPath()%>/post/edit.jsp">Добавить вакансию</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="<%=request.getContextPath()%>/candidate/edit.jsp">Добавить кандидата</a>
+                <a class="nav-link" href="<%=request.getContextPath()%>/candidates.do?id=0">Добавить кандидата</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="<%=request.getContextPath()%>/auth.do">
@@ -72,5 +72,10 @@
         </div>
     </div>
 </div>
+<script>
+    $(document).ready(function(){
+        localStorage.setItem('ajaxtoken', "<%=session.getAttribute("token")%>");
+    });
+</script>
 </body>
 </html>
