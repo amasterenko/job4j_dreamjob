@@ -21,11 +21,10 @@ import java.util.Date;
  * makes users unauthorized by serving GET-requests.
  * It also generates a token (JWT) for using with AJAX CORS-requests on clients.
  * @author AndrewMs
- * @version 1.0
+ * @version 1.1
  */
 public class AuthServlet extends HttpServlet {
     private static final Logger LOG = LoggerFactory.getLogger(AuthServlet.class.getName());
-    private String key;
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp)
@@ -54,21 +53,17 @@ public class AuthServlet extends HttpServlet {
     }
 
     private String getToken(User user) {
+        String key = getServletContext().getInitParameter("key");
         String token = null;
         try {
             token = JWT.create()
                     .withIssuer("dreamjob")
                     .withClaim("user", user.getId())
                     .withIssuedAt(new Date(System.currentTimeMillis()))
-                    .sign(Algorithm.HMAC256(this.key));
+                    .sign(Algorithm.HMAC256(key));
         } catch (JWTCreationException e) {
             LOG.error("Exception occurred: ", e);
         }
         return token;
-    }
-
-    @Override
-    public void init() {
-        this.key = getServletContext().getInitParameter("key");
     }
 }
