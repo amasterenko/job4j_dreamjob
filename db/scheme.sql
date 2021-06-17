@@ -30,9 +30,4 @@ INSERT INTO city (name) VALUES ('Moscow'),
                                ('St.-Petersburg'),
                                ('Nizhniy Novgorod'),
                                ('Kazan'),
-                               ('Samara'),
-                               ('Владимир'),
-                               ('Воронеж'),
-                               ('Новосибирск'),
-                               ('Красноярск'),
-                               ('Хабаровск');
+                               ('Samara');
